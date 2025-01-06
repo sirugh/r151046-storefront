@@ -1,0 +1,7 @@
+mountpoints:
+  /:
+    url: https://content.da.live/sirugh/r151046-storefront/
+    type: markup
+
+folders:
+  /products/: /products/default
