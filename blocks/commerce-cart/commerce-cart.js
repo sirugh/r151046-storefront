@@ -105,10 +105,38 @@ export default async function decorate(block) {
     })($summary),
 
     // Empty Cart
-    provider.render(EmptyCart, {
-      routeCTA: startShoppingURL ? () => startShoppingURL : undefined,
-    })($emptyCart),
+    // provider.render(EmptyCart, {
+    //   routeCTA: startShoppingURL ? () => startShoppingURL : undefined,
+    // })($emptyCart),
   ]);
+
+  /**
+   * Empty Cart
+   */
+var emptyCartTemplate = document.createRange().createContextualFragment(`
+    <div id="empty-cart">
+      <img src="/2762885.png" style="width: 300px;" />
+      <h1>Your Cart is Empty</h1>
+      <p id="quote"></p>
+      <p>
+        <button id="button" onclick="window.location.href='/';">Shop Now</button>
+      </p>
+    <div>  
+  `);
+
+  const quote = await fetch('https://dummyjson.com/quotes')
+    .then((res) => res.json())
+    .then(({ quotes }) => {
+      // Randomly select a quote
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      return '"' + quotes[randomIndex].quote + '" – ' + quotes[randomIndex].author;
+    });
+
+  if (quote) {
+    emptyCartTemplate.querySelector('#quote').textContent = quote;
+  }
+
+  $emptyCart.appendChild(emptyCartTemplate);
 
   let cartViewEventPublished = false;
   // Events

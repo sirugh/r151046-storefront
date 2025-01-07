@@ -1,4 +1,4 @@
-/* stylelint-disable selector-class-pattern */
+ /* stylelint-disable selector-class-pattern */
 
 .commerce-cart {
   padding: var(--spacing-large) 0;
@@ -29,4 +29,22 @@
     flex: 1;
     flex-basis: auto;
   }
+}
+
+#empty-cart {
+    text-align: center;
+}
+
+#button {
+    background-color: var(--color-brand-500);
+    color: white;
+    border: none;
+    padding: var(--spacing-small);
+    cursor: pointer;
+}
+
+#quote {
+    font-style: italic;
+    max-width: 600px;
+    margin: auto;
 }
