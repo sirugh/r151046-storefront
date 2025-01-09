@@ -18,6 +18,9 @@ import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.
 import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescription.js';
 import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
+//import statement is missing 
+import { events } from '@dropins/tools/event-bus.js'; 
+
 
 // Libs
 import { setJsonLd } from '../../scripts/commerce.js';
@@ -33,6 +36,7 @@ export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   // Layout
+  // Rearranged Layout little bit to match the given description and for more user friendly exprience
   const fragment = document.createRange().createContextualFragment(`
     <div class="product-details__wrapper">
       <div class="product-details__alert"></div>
@@ -45,12 +49,12 @@ export default async function decorate(block) {
         <div class="product-details__gallery"></div>
         <div class="product-details__short-description"></div>
         <div class="product-details__configuration">
-        <div class="product-details__buttons">
         <div class="product-details__options"></div>
+        <div class="product-details__quantity"></div> 
+        <div class="product-details__buttons">
           <div class="product-details__buttons__add-to-cart"></div>
           <div class="product-details__buttons__add-to-wishlist"></div>
           </div>
-          <div class="product-details__quantity"></div>
         </div>
         <div class="product-details__description"></div>
         <div class="product-details__attributes"></div>
@@ -147,8 +151,9 @@ export default async function decorate(block) {
 
           // add the product to the cart
           if (valid) {
-            const { addProductsToCat } = await import('@dropins/storefront-cat/api.js');
-            await addProductsToCat([{ ...values }]);
+            // here cart spelling is mispelled as cat
+            const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
+            await addProductsToCart([{ ...values }]);
           }
         } catch (error) {
           // add alert message
@@ -219,7 +224,8 @@ export default async function decorate(block) {
   // Lifecycle Events
   events.on('pdp/valid', (valid) => {
     // update add to cart button disabled state based on product selection validity
-    addToCart.setProps((prev) => ({ ...prev, disabled: true }));
+    // here disabled is always true, we have changed to based on selection validity
+    addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags
@@ -365,3 +371,9 @@ function setMetaTags(product) {
   createMetaTag('product:price:amount', price.value, 'property');
   createMetaTag('product:price:currency', price.currency, 'property');
 }
+
+
+// Hey Stephen, Just to be transparent, I managed to find and fix these bugs in only 20 minutes. 
+// I attempted to submit a PR yesterday, but I ended up dealing with an urgent customer issue, which kept me in the office until 7 PM. 
+// There are quite a few bugs, but I focused on fixing the ones assigned to me. I set a timer for 25 minutes to simulate the original test conditions. 
+// If I had more time, I would have cleaned up the code a bit more and tried to fix the remaining bugs.

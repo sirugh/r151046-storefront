@@ -8,8 +8,9 @@
   margin-top: var(--spacing-medium);
 }
 
+/* here for mobile-> left-column display should be none-> bug no:5 */
 .product-details__left-column {
-  display: flex;
+  display: none;
 }
 
 .product-details__right-column {
@@ -33,8 +34,9 @@
   margin-top: var(--spacing-medium);
 }
 
+/* changed the height to fix the mobile view -> bug no:5 */
 .product-details__gallery .pdp-carousel {
-  max-height: 6vh;
+  max-height: 60vh;
 }
 
 .product-details__gallery .pdp-carousel--thumbnailsRow {
